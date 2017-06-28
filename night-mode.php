@@ -103,15 +103,18 @@ function nmAddSwitch(){
   		var nightmode = $( '#nightmode' );
   		nightmode.click(function(){
   		var sheet = window.document.styleSheets[0]
+
         if(document.getElementById('nightmode_checkbox').checked)
         {
         	console.log("Checked");
-			sheet.insertRule('html { filter: invert(1) hue-rotate(180deg);}', sheet.cssRules.length);
+        	//If you add image, it won't be affected
+			sheet.insertRule('html, video {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);
+			
         }
         else
         {
         	console.log("Unchecked");
-        	sheet.insertRule('html { filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
+        	sheet.insertRule('html, video {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
         }
 	});
 	});
