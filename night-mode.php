@@ -95,11 +95,11 @@ class Night_Mode extends WP_Widget{
   		var sheet = window.document.styleSheets[0]
 
         if(document.getElementById('nightmode_checkbox').checked){
-			sheet.insertRule('html, video {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);
+			sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);
 			
         }
         else{
-        	sheet.insertRule('html, video {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
+        	sheet.insertRule('html, video, img {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
         }
 		});
 	});
@@ -133,18 +133,46 @@ class Night_Mode extends WP_Widget{
 				<?php _e('Auto-Set Based On Time'); ?>
 			</label>
 		</p>
-		<p>
+		<p class="nm_edit_time">
 			<input type="time" id="<?php echo $this->get_field_id('nm_start_time'); ?>" name="<?php echo $this->get_field_name('nm_start_time') ?>" value=<?php echo($nm_start_time)?>>
-			<label for="<?php echo $this->get_field_id('nm_start_time'); ?>">
+			<label id="<?php echo $this->get_field_id('nm_start_time'); ?>_l" for="<?php echo $this->get_field_id('nm_start_time'); ?>">
 				<?php _e('Start Time'); ?>
 			</label>
 		</p>
-		<p>
+		<p class="nm_edit_time">
 			<input type="time" id="<?php echo $this->get_field_id('nm_end_time'); ?>" name="<?php echo $this->get_field_name('nm_end_time') ?>" value=<?php echo($nm_end_time)?>>
-			<label for="<?php echo $this->get_field_id('nm_end_time'); ?>">
+			<label id="<?php echo $this->get_field_id('nm_end_time'); ?>_l" for="<?php echo $this->get_field_id('nm_end_time'); ?>">
 				<?php _e('End Time'); ?>
 			</label>
 		</p>
+		
+		<script>
+			jQuery(document).ready(function($){
+				console.log("<?php echo $this->get_field_id('nm_auto_set'); ?>");
+				if(document.getElementById("<?php echo $this->get_field_id('nm_auto_set'); ?>").checked == false){
+					$('#<?php echo $this->get_field_id('nm_start_time'); ?>').hide();
+					$('#<?php echo $this->get_field_id('nm_end_time'); ?>').hide();
+					$('#<?php echo $this->get_field_id('nm_start_time'); ?>_l').hide();
+					$('#<?php echo $this->get_field_id('nm_end_time'); ?>_l').hide();
+				}
+	
+				$('#<?php echo $this->get_field_id('nm_auto_set'); ?>').click(function(){
+					if(document.getElementById("<?php echo $this->get_field_id('nm_auto_set'); ?>").checked){
+						$('#<?php echo $this->get_field_id('nm_start_time'); ?>').show();
+						$('#<?php echo $this->get_field_id('nm_end_time'); ?>').show();
+						$('#<?php echo $this->get_field_id('nm_start_time'); ?>_l').show();
+						$('#<?php echo $this->get_field_id('nm_end_time'); ?>_l').show();
+					}
+					else{
+						$('#<?php echo $this->get_field_id('nm_start_time'); ?>').hide();
+						$('#<?php echo $this->get_field_id('nm_end_time'); ?>').hide();
+						$('#<?php echo $this->get_field_id('nm_start_time'); ?>_l').hide();
+						$('#<?php echo $this->get_field_id('nm_end_time'); ?>_l').hide();
+					}
+				});
+			});
+ 		</script>
+ 		
 		<?php
 	}
 	
@@ -158,5 +186,4 @@ class Night_Mode extends WP_Widget{
 }
 add_action('widgets_init', function(){
 	register_widget('Night_Mode');});
-
 ?>
