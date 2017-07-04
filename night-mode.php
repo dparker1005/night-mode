@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Night Mode
-Description: Makes webpage night-friendly
-Version: 0.0
+Description: A widget that makes webpages night-friendly
+Version: 1.0
 Author: David Parker
 */
 
@@ -16,94 +16,163 @@ class Night_Mode extends WP_Widget{
 	}
 	
 	public function widget($args, $instance){
+		if(isset($instance['nm_auto_set'])){
+			$nm_auto_set = $instance['nm_auto_set'];
+		}
+		else{
+			$nm_auto_set = false;
+		}
+		//determine whether or not page should start in night-mode
+		if($nm_auto_set==true){
+			//make sure variables have values
+			if(isset($instance['nm_start_time'])){
+				$nm_start_time = $instance['nm_start_time'];
+			}
+			else{
+				$nm_start_time = "20:00";
+			}
+			if(isset($instance['nm_end_time'])){
+				$nm_end_time = $instance['nm_end_time'];
+			}
+			else{
+				$nm_end_time = "06:00";
+			}
+		
+			//get current time(of server)
+			date_default_timezone_set("America/New_York");
+			$current_hour = (int)date("h");
+			$current_minute = (int)date("i");
+		
+			$start_time = explode(":", $nm_start_time);
+			$start_hour = (int)$start_time[0];
+			$start_minute = (int)$start_time[1];
+		
+			$end_time = explode(":", $nm_end_time);
+			$end_hour = (int)$end_time[0];
+			$end_minute = (int)$end_time[1];
+		
+			//compare times
+			if($current_hour>$start_hour){$current_before_start=false;}
+			else if($current_hour<$start_hour){$current_before_start=true;}
+			else if($current_minute>$start_minute){$current_before_start=false;}
+			else{$current_before_start=true;}
+			
+			if($current_hour>$end_hour){$current_before_end=false;}
+			else if($current_hour<$end_hour){$current_before_end=true;}
+			else if($current_minute>$end_minute){$current_before_end=false;}
+			else{$current_before_end=true;}
+		
+			if($start_hour>$end_hour){$start_before_end=false;}
+			else if($start_hour<$end_hour){$start_before_end=true;}
+			else if($start_minute>$end_minute){$start_before_end=false;}
+			else{$start_before_end=true;}
+			
+			//determine if night-mode should be active
+			if(($start_before_end==true && $current_before_start==false && $current_before_end = true) 
+				|| ($start_before_end == false && ($current_before_start == false || $current_before_end == true))){
+				$auto_set = true;
+			}
+			else{
+				$auto_set = false;
+			}
+			
+		}
+		else{
+			$auto_set = false;
+		}
 	?>
 		<div style="width:200px; height:100px;">
-	<table><tr><th>Night Mode</th>
-	<td>
+		<table><tr><th>Night Mode</th>
+		<td>
 		
-				<label class="switch" id="nightmode">
-				<input type="checkbox" id="nightmode_checkbox">
-				<div class="slider round"></div></label>
-	</td>
-	</table></div></tr>
+					<label class="switch" id="nightmode">
+					<input type="checkbox" id="nightmode_checkbox" <?php if($auto_set==true){echo("checked");}?>>
+					<div class="slider round"></div></label>
+		</td>
+		</table></div></tr>
 	
-	<style>
-	/* The switch - the box around the slider */
-		#nightmode {
-		  position: relative;
-		  display: inline-block;
-		  width: 60px;
-		  height: 34px;
-		}
+		<style>
+		/* Copied from https://www.w3schools.com/howto/howto_css_switch.asp */
+		
+		/* The switch - the box around the slider */
+			#nightmode {
+			  position: relative;
+			  display: inline-block;
+			  width: 60px;
+			  height: 34px;
+			}
 
-		/* Hide default HTML checkbox */
-		#nightmode input {display:none;}
+			/* Hide default HTML checkbox */
+			#nightmode input {display:none;}
 
-		/* The slider */
-		.slider {
-		  position: absolute;
-		  cursor: pointer;
-		  top: 0;
-		  left: 0;
-		  right: 0;
-		  bottom: 0;
-		  background-color: #ccc;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
+			/* The slider */
+			.slider {
+			  position: absolute;
+			  cursor: pointer;
+			  top: 0;
+			  left: 0;
+			  right: 0;
+			  bottom: 0;
+			  background-color: #ccc;
+			  -webkit-transition: .4s;
+			  transition: .4s;
+			}
 
-		.slider:before {
-		  position: absolute;
-		  content: "";
-		  height: 26px;
-		  width: 26px;
-		  left: 4px;
-		  bottom: 4px;
-		  background-color: white;
-		  -webkit-transition: .4s;
-		  transition: .4s;
-		}
+			.slider:before {
+			  position: absolute;
+			  content: "";
+			  height: 26px;
+			  width: 26px;
+			  left: 4px;
+			  bottom: 4px;
+			  background-color: white;
+			  -webkit-transition: .4s;
+			  transition: .4s;
+			}
 
-		input:checked + .slider {
-		  background-color: #f37e21;
-		}
+			input:checked + .slider {
+			  background-color: #f37e21;
+			}
 
-		input:focus + .slider {
-		  box-shadow: 0 0 1px #2196F3;
-		}
+			input:focus + .slider {
+			  box-shadow: 0 0 1px #2196F3;
+			}
 
-		input:checked + .slider:before {
-		  -webkit-transform: translateX(26px);
-		  -ms-transform: translateX(26px);
-		  transform: translateX(26px);
-		}
+			input:checked + .slider:before {
+			  -webkit-transform: translateX(26px);
+			  -ms-transform: translateX(26px);
+			  transform: translateX(26px);
+			}
 
-		/* Rounded sliders */
-		.slider.round {
-		  border-radius: 34px;
-		}
+			/* Rounded sliders */
+			.slider.round {
+			  border-radius: 34px;
+			}
 
-		.slider.round:before {
-		  border-radius: 50%;
-		}
-	</style>
-	<script type='text/javascript src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
-	<script>
-	jQuery(document).ready(function($){
-  		//you can now use $ as your jQuery object.
-  		$( '#nightmode' ).click(function(){
-  		var sheet = window.document.styleSheets[0]
-
-        if(document.getElementById('nightmode_checkbox').checked){
-			sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);
-			
-        }
-        else{
-        	sheet.insertRule('html, video, img {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
-        }
+			.slider.round:before {
+			  border-radius: 50%;
+			}		
+		</style>
+		<script type='text/javascript src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
+		<script>
+		//CSS filter found at https://lnikki.la/articles/night-mode-css-filter/	
+		jQuery(document).ready(function($){
+			var sheet = window.document.styleSheets[0];
+			<?php 
+				if($auto_set==true){
+					echo('sheet.insertRule("html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}", sheet.cssRules.length);');
+				}
+			?>
+			$( '#nightmode' ).click(function(){
+				if(document.getElementById('nightmode_checkbox').checked){
+					sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);	
+				}
+				else{
+					sheet.insertRule('html, video, img {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
+				}
+			});
 		});
-	});
-	</script>
+		</script>
 	<?php
 	}
 
