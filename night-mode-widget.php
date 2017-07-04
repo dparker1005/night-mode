@@ -108,17 +108,41 @@ class Night_Mode extends WP_Widget{
 	}
 
 	public function form($instance){
-		if(isset($instance['checked'])){
-			$checked = $instance['checked'];
+		if(isset($instance['nm_auto_set'])){
+			$nm_auto_set = $instance['nm_auto_set'];
 		}
 		else{
-			$checked = false;
+			$nm_auto_set = false;
+		}
+		if(isset($instance['nm_start_time'])){
+			$nm_start_time = $instance['nm_start_time'];
+		}
+		else{
+			$nm_start_time = "20:00";
+		}
+		if(isset($instance['nm_end_time'])){
+			$nm_end_time = $instance['nm_end_time'];
+		}
+		else{
+			$nm_end_time = "06:00";
 		}
 		?>
 		<p>
-			<input class="checkbox" type="checkbox" <?php checked( $checked ); ?> id="<?php echo $this->get_field_id('checked'); ?>" name="<?php echo $this->get_field_name('checked') ?>">
-			<label for="<?php echo $this->get_field_id('checked'); ?>">
-				<?php _e('Checked'); ?>
+			<input class="checkbox" type="checkbox" <?php checked( $nm_auto_set ); ?> id="<?php echo $this->get_field_id('nm_auto_set'); ?>" name="<?php echo $this->get_field_name('nm_auto_set') ?>">
+			<label for="<?php echo $this->get_field_id('nm_auto_set'); ?>">
+				<?php _e('Auto-Set Based On Time'); ?>
+			</label>
+		</p>
+		<p>
+			<input type="time" id="<?php echo $this->get_field_id('nm_start_time'); ?>" name="<?php echo $this->get_field_name('nm_start_time') ?>" value=<?php echo($nm_start_time)?>>
+			<label for="<?php echo $this->get_field_id('nm_start_time'); ?>">
+				<?php _e('Start Time'); ?>
+			</label>
+		</p>
+		<p>
+			<input type="time" id="<?php echo $this->get_field_id('nm_end_time'); ?>" name="<?php echo $this->get_field_name('nm_end_time') ?>" value=<?php echo($nm_end_time)?>>
+			<label for="<?php echo $this->get_field_id('nm_end_time'); ?>">
+				<?php _e('End Time'); ?>
 			</label>
 		</p>
 		<?php
@@ -126,7 +150,9 @@ class Night_Mode extends WP_Widget{
 	
 	public function update($new_instance, $old_instance){
 		$instance = $old_instance;
-		$instance['checked'] = isset( $new_instance['checked'] ) ? (bool) $new_instance['checked'] : false;
+		$instance['nm_auto_set'] = isset( $new_instance['nm_auto_set'] ) ? (bool) $new_instance['nm_auto_set'] : false;
+		$instance['nm_start_time'] = isset( $new_instance['nm_start_time'] ) ? (string) $new_instance['nm_start_time'] : "20:00";
+		$instance['nm_end_time'] = isset( $new_instance['nm_end_time'] ) ? (string) $new_instance['nm_end_time'] : "06:00";
 		return $instance;
 	}
 }
