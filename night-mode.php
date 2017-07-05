@@ -18,6 +18,7 @@ class Night_Mode extends WP_Widget{
 	public function widget($args, $instance){
 		if(isset($instance['nm_auto_set'])){
 			$nm_auto_set = $instance['nm_auto_set'];
+			$instance['nm_auto_set'] = false;
 		}
 		else{
 			$nm_auto_set = false;
@@ -25,22 +26,25 @@ class Night_Mode extends WP_Widget{
 		//determine whether or not page should start in night-mode
 		if($nm_auto_set==true){
 			//make sure variables have values
+
 			if(isset($instance['nm_start_time'])){
 				$nm_start_time = $instance['nm_start_time'];
 			}
 			else{
 				$nm_start_time = "20:00";
+				$instance['nm_start_time'] = "20:00";
 			}
 			if(isset($instance['nm_end_time'])){
 				$nm_end_time = $instance['nm_end_time'];
 			}
 			else{
 				$nm_end_time = "06:00";
+				$instance['nm_end_time'] = "06:00";
 			}
 		
 			//get current time(of server)
 			date_default_timezone_set("America/New_York");
-			$current_hour = (int)date("h");
+			$current_hour = (int)date("H");
 			$current_minute = (int)date("i");
 		
 			$start_time = explode(":", $nm_start_time);
@@ -82,8 +86,8 @@ class Night_Mode extends WP_Widget{
 		}
 	?>
 		<div style="width:200px; height:100px;">
-		<table><tr><th>Night Mode</th>
-		<td>
+		<table class="borderless"><tr class="borderless"><th class="borderless">Night Mode</th>
+		<td class="borderless">
 		
 					<label class="switch" id="nightmode">
 					<input type="checkbox" id="nightmode_checkbox" <?php if($auto_set==true){echo("checked");}?>>
@@ -92,8 +96,11 @@ class Night_Mode extends WP_Widget{
 		</table></div></tr>
 	
 		<style>
-		/* Copied from https://www.w3schools.com/howto/howto_css_switch.asp */
+			.borderless {
+				border: 0px;
+			}
 		
+		/* Copied from https://www.w3schools.com/howto/howto_css_switch.asp */
 		/* The switch - the box around the slider */
 			#nightmode {
 			  position: relative;
@@ -182,18 +189,21 @@ class Night_Mode extends WP_Widget{
 		}
 		else{
 			$nm_auto_set = false;
+			$instance['nm_auto_set'] = false;
 		}
 		if(isset($instance['nm_start_time'])){
 			$nm_start_time = $instance['nm_start_time'];
 		}
 		else{
 			$nm_start_time = "20:00";
+			$instance['nm_start_time'] = "20:00";
 		}
 		if(isset($instance['nm_end_time'])){
 			$nm_end_time = $instance['nm_end_time'];
 		}
 		else{
 			$nm_end_time = "06:00";
+			$instance['nm_end_time'] = "06:00";
 		}
 		?>
 		<p>
