@@ -167,15 +167,18 @@ class Night_Mode extends WP_Widget{
 			var sheet = window.document.styleSheets[0];
 			<?php 
 				if($auto_set==true){
-					echo('sheet.insertRule("html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}", sheet.cssRules.length);');
+					//echo('sheet.insertRule("html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}", sheet.cssRules.length);');
+					echo('sheet.insertRule("html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);}", sheet.cssRules.length);');
 				}
 			?>
 			$( '#nightmode' ).click(function(){
 				if(document.getElementById('nightmode_checkbox').checked){
-					sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);	
+					//sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);background: black;}', sheet.cssRules.length);	
+					sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);}', sheet.cssRules.length);	
 				}
 				else{
-					sheet.insertRule('html, video, img {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
+					//sheet.insertRule('html, video, img {-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
+					sheet.insertRule('html, video, img{-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
 				}
 			});
 		});
