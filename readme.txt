@@ -16,7 +16,7 @@ This plugin adds a widget that can be added to the sidebar that allows the user 
 == Changelog ==
 = 1.1 =
 * Broke code into different files
-* Saving user's choices using cookies
+* Saving whether night mode is enabled during page loads
 
 = 1.0 =
 * Created Plugin
