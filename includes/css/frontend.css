@@ -4,7 +4,7 @@
 
 /* Copied from https://www.w3schools.com/howto/howto_css_switch.asp */
 /* The switch - the box around the slider */
-	#nightmode {
+	#night_mode {
 		position: relative;
 		display: inline-block;
 		width: 60px;
@@ -12,7 +12,7 @@
 	}
 
 	/* Hide default HTML checkbox */
-	#nightmode input {display:none;}
+	#night_mode input {display:none;}
 
 	/* The slider */
 	.slider {
