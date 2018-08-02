@@ -37,7 +37,7 @@ class Night_Mode_Widget extends WP_Widget {
 			$data['end_time'] = $instance['nm_end_time'];
 		}
 
-		wp_register_script( 'night-mode-frontend', plugins_url( 'includes/js/night-mode-frontend.js', NIGHT_MODE_BASENAME ), array( 'jquery' ) );
+		wp_register_script( 'night-mode-frontend', plugins_url( 'includes/js/night-mode-frontend.js', NIGHT_MODE_BASENAME ), array( 'jquery', 'utils' ) );
 
 		wp_localize_script( 'night-mode-frontend', 'night_mode', $data );
 

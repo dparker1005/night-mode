@@ -20,18 +20,30 @@ jQuery(document).ready(function($){
 		}
 	}
 
+	var cookie_val = wpCookies.get('night-mode-enabled', '/');
+	if( null != cookie_val && 'enabled' == cookie_val ) {
+		begin_enabled = true;
+	} else if( null != cookie_val && 'disabled' == cookie_val ) {
+		begin_enabled = false;
+	}
+
 	if(begin_enabled == true) {
 			sheet.insertRule("html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);}", sheet.cssRules.length);
 			$('#night_mode_checkbox').prop('checked', true);
+			wpCookies.set('night-mode-enabled', 'enabled', 60, '/' );
+	} else {
+		wpCookies.set('night-mode-enabled', 'disabled', 60, '/' );
 	}
 
 	$( '#night_mode_checkbox' ).change(function(){
 		console.log('changed');
 		if(document.getElementById('night_mode_checkbox').checked){
 			sheet.insertRule('html, video, img {-webkit-filter: invert(1) hue-rotate(180deg);filter: invert(1) hue-rotate(180deg);}', sheet.cssRules.length);
+			wpCookies.set('night-mode-enabled', 'enabled', 60, '/' );
 		}
 		else{
 			sheet.insertRule('html, video, img{-webkit-filter: invert(0) hue-rotate(0deg);filter: invert(0) hue-rotate(0deg);}', sheet.cssRules.length);
+			wpCookies.set('night-mode-enabled', 'disabled', 60, '/' );
 		}
 	});
 });
